@@ -1,4 +1,5 @@
-from rest_framework import viewsets
+# views.py
+from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -11,22 +12,21 @@ class LikeViewSet(viewsets.ModelViewSet):
     serializer_class = LikeSerializer
     permission_classes = [IsAuthenticated]
 
-    # Метод для добавления или удаления лайка
-    @action(detail=True, methods=['patch'])
+    @action(detail=True, methods=['post'])
     def toggle_like(self, request, pk=None):
-        like = self.get_object()
+        post = Posts.objects.get(pk=pk)  # Получаем объект поста по переданному pk
         user = request.user
-        post = like.post
+        try:
+            like = Like.objects.get(post=post, author=user)
+            like.like = not like.like  # Переключаем значение поля like
+            like.save()
+            message = 'unliked' if not like.like else 'liked'
+        except Like.DoesNotExist:
+            Like.objects.create(post=post, author=user, like=True)
+            message = 'liked'
+        return Response({"message": message}, status=status.HTTP_200_OK)
 
-        # Проверка, может ли пользователь лайкнуть/дизлайкнуть
-        if user == like.author:
-            return Response({"detail": "Вы не можете лайкнуть/дизлайкнуть свой собственный пост."}, status=400)
-
-        if Like.objects.filter(post=post, author=user).exists():
-            # Если лайк уже существует, удаляем его
-            Like.objects.filter(post=post, author=user).delete()
-            return Response({"message": "Лайк удален"}, status=200)
-        else:
-            # Иначе, создаем новый лайк
-            Like.objects.create(post=post, author=user)
-            return Response({"message": "Лайк добавлен"}, status=201)
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)

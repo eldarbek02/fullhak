@@ -1,11 +1,9 @@
 from rest_framework.serializers import ModelSerializer, ReadOnlyField
 from .models import Like
-from post.serializers import PostSerializer
-
 
 class LikeSerializer(ModelSerializer):
     author = ReadOnlyField(source='author.email')
-    post = PostSerializer(read_only=True)
+    post = ReadOnlyField(source='post.id')
 
     class Meta:
         model = Like
