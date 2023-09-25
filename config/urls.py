@@ -41,7 +41,7 @@ urlpatterns = [
     path('api/v1/docs/', schema_view.with_ui("swagger")),
     path('',include('post.urls')),
     path('', include('comment.urls')),
-    path("",include('like.urls'))
+    path('',include('like.urls'))
     
 ]
 

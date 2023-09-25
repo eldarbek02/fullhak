@@ -4,8 +4,9 @@ from comment.serializers import CommentSerializers
 from like.serializers import LikeSerializer
 
 class PostSerializer(serializers.ModelSerializer):
-    comment = CommentSerializers(many=True,read_only=True)
-    like = LikeSerializer(read_only=True,many=True)
+    comments = CommentSerializers(many=True, read_only=True)
+    likes = LikeSerializer(many=True, read_only=True)
+
 
     class Meta:
         model = Posts

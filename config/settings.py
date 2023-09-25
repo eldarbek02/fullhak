@@ -54,7 +54,8 @@ INSTALLED_APPS = [
     'account',
     'post',
     'comment',
-    'like'
+    'like',
+    'favorite'
 ]
 
 MIDDLEWARE = [
@@ -65,6 +66,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.cache.CacheMiddleware',
+    'django.middleware.cache.UpdateCacheMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -177,3 +180,13 @@ SWAGGER_SETTINGS = {
     }
 }
 
+
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'django.core.cache.backends.redis.RedisCache',
+#         'LOCATION': 'redis://localhost:6379/1',  # Укажите соответствующий адрес и порт Redis.
+#         'OPTIONS': {
+#             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+#         }
+#     }
+# }
