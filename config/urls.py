@@ -40,8 +40,9 @@ urlpatterns = [
     path('api/v1/account/', include('account.urls')),
     path('api/v1/docs/', schema_view.with_ui("swagger")),
     path('',include('post.urls')),
-    path('', include('comment.urls')),
-    path('',include('like.urls'))
+    path('', include('rivew.urls')),
+    path('',include('rivew.urls')),
+    path('',include('favorite.urls'))
     
 ]
 

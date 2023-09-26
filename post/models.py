@@ -8,4 +8,3 @@ class Posts(models.Model):
     categories = models.CharField(blank=False)
     data_create = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(User,on_delete=models.CASCADE,related_name='post')
-

@@ -8,8 +8,8 @@ from rest_framework.response import Response
 from .serializers import PostSerializer
 from .models import Posts
 from rest_framework import permissions
-from like.serializers import LikeSerializer
-from like.models import Like
+from rivew.serializers import LikeSerializer
+from rivew.models import Like
 from rest_framework.decorators import action
 
 
@@ -52,7 +52,7 @@ class PostView(viewsets.ModelViewSet):
     
     @action(detail=True, methods=['get'])
     def likes(self, request, pk=None):
-        post = self.get_object()  # Получаем объект поста по переданному pk
+        post = self.get_object()  
         likes = Like.objects.filter(post=post)
         serializer = LikeSerializer(likes, many=True)
         return Response(serializer.data)
